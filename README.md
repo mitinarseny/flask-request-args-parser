@@ -47,25 +47,25 @@ The order checking attributes is:
 1. [`validators`](#validators)
 
 ### `locations`
-Type: `list[str]`
+Type: `list[str]`  
 This attribute tells where to look for a param.
 Possible locations: `'args' | 'json' | 'headers' | 'cookies'`.  
 You can combine locations: `'locations': ['args', 'headers']`.  
 Default: `['args','json']`.  
 
 ### `required`
-Type: `bool`
+Type: `bool`  
 If `required` is `True` and param is missing in given `locations`, Flask will `abort` with `400`, `Missing required param: <param_name> in <locations>.`.
     
 ### `type`
-Type: `class`
+Type: `class`  
 If `type` is specified, parser will try to convert param into given type. Otherwise Flask will `abort` with `400`, `Invalid param type: <param_name> must be <param_type>, not <input_type>.`.
 
 ### `default`
-Type: `object`
+Type: `object`  
 If param isn't required and it is not listed in required locations the `default` value will be assigned to this param.
 
-### `validators`
+### `validators`  
 Type: `list[function | lambda]`
 If param has `validators`, the input param value will go through all validators in given order and return value of last given validator will be assigned to this param. If at least one of validators returns None and error message, Flask will `abort` with `400`, `Invalid <param_name> param: <>.`. Here is the illustration:
 ```python
@@ -91,7 +91,7 @@ PARAMS = {
 
 params = parse_params(PARAMS)
 ```
-This validation will return `v3(v2(v1(<input_param>)))`
+This validation will return `v3(v2(v1(<input_param>)))`  
 
 ## Example of usage
 ```python
