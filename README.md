@@ -1,5 +1,5 @@
 # Flask-request-args-parser
-Pyhton3 package implementing flask.request args parsing.
+Python3 package implementing flask.request args parsing.
 
 ## Table of Contents
 * [Installiation](#installiation)
