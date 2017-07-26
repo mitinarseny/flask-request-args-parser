@@ -48,10 +48,10 @@ The order checking attributes is:
 
 ### `locations`
 Type: `list[str]`  
+Default: `['args','json']`  
 This attribute tells where to look for a param.
 Possible locations: `'args' | 'json' | 'headers' | 'cookies'`.  
 You can combine locations: `'locations': ['args', 'headers']`.  
-Default: `['args','json']`.  
 
 ### `required`
 Type: `bool`  
