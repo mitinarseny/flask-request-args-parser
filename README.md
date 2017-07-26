@@ -46,22 +46,27 @@ The order checking attributes is:
 1. [`default`](#default)
 1. [`validators`](#validators)
 
-### `locations: list[str]`
+### `locations`
+Type: `list[str]`
 This attribute tells where to look for a param.
 Possible locations: `'args' | 'json' | 'headers' | 'cookies'`.  
 You can combine locations: `'locations': ['args', 'headers']`.  
 Default: `['args','json']`.  
 
-### `required: bool`
+### `required`
+Type: `bool`
 If `required` is `True` and param is missing in given `locations`, Flask will `abort` with `400`, `Missing required param: <param_name> in <locations>.`.
     
-### `type: class`
+### `type`
+Type: `class`
 If `type` is specified, parser will try to convert param into given type. Otherwise Flask will `abort` with `400`, `Invalid param type: <param_name> must be <param_type>, not <input_type>.`.
 
-### `default: object`
+### `default`
+Type: `object`
 If param isn't required and it is not listed in required locations the `default` value will be assigned to this param.
 
-### `validators: list[function | lambda]`
+### `validators`
+Type: `list[function | lambda]`
 If param has `validators`, the input param value will go through all validators in given order and return value of last given validator will be assigned to this param. If at least one of validators returns None and error message, Flask will `abort` with `400`, `Invalid <param_name> param: <>.`. Here is the illustration:
 ```python
 def v1(v): 
