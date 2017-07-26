@@ -20,6 +20,7 @@ def _split_validator(v):
 
 
 class R(Resource):
+
     PARAMS = {
         'GET': {
             'n': {
@@ -44,10 +45,12 @@ class R(Resource):
             }
         }
     }
+
     def get(self):
         params = parse_params(self.PARAMS['GET'])
         n = params['n']
         return {'response': n}
+
     def post(self):
         params = parse_params(self.PARAMS['POST'])
         s = params['s']
