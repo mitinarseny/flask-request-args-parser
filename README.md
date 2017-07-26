@@ -1,12 +1,21 @@
-# flask-request-args-parser
-This is a Pyhton3 package, that implements flask.request args parsing.
+# Flask-request-args-parser
+Pyhton3 package implementing flask.request args parsing.
+
+## Table of Contents
+* [Installiation](#installiation)
+* [Dependencies](#dependencies)
+* [How to use](#how-to-use)
+* [Attributes definition](#attributes-definition)
+* [Example of usage](#example-of-usage)
 
 ## Installiation
+Using pip:
 ```bash
 pip install flask-request-args-parser
 ```
 ## Dependencies
-* [Flask](http://flask.pocoo.org)
+* [Flask](http://flask.pocoo.org)  
+
 ## How to use
 Somewhere in your code:
 ```python
