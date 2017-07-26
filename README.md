@@ -133,7 +133,8 @@ class R(Resource):
                 'vaildators': [
                     lambda v: v.lower(),
                 ],
-                'locations': ['json']
+                'locations': ['json'],
+                'required': True
             }
         }
     }
