@@ -7,11 +7,11 @@ pip install flask-request-args-parser
 ## How to use
 Somewhere in your code:
 ```python
-# ...
 def _param1_validator(v):
     if v <= 0:
         return None, '\'param1\' must be greater than 0' # return None and error message if input value 'v' is not valid
     return v # return any value that will be assigned to param, that is being validated
+
 PARAMS = {
     'param_name_1': { # replace it with your str param_name
         'type': int, # or any other class
@@ -27,16 +27,31 @@ PARAMS = {
         # ...
     }
 }
+
 params = parse_params(PARAMS)
 param1 = params['param_name_1']
 ```
 ### `required`
-If param is required Flask will abort with code 400 and message: 'Missing required param: \'<param_name>\' in <locations>'
+If param is required Flask will `abort` with `400`, `Missing required param: <param_name> in <locations>.`.
+    
 ### `type`
-If param can't be converted to its `type` field Flask will abort with code 400 and message: 'Invalid param type: \'<param_name>\' must be \'<param_type>\', not \'got_type\''
+If param can't be converted to its `type` field Flask will `abort` with `400`, `Invalid param type: <param_name> must be <param_type>, not <input_type>.`.
 ### `default`
-If param isn't required and it is not listed in required locations the default value will be assigned to this param
-### ---------------
+If param isn't required and it is not listed in required locations the `default` value will be assigned to this param.
+
+### `validators`
+If param has `validators`, the input param value will go through all validators in given order and return value of last given validator will be assigned to this param. If at least one of validators returns None and error message, Flask will `abort` with `400`, `Invalid <param_name> param: <>` Here is the illustration:
+```python
+PARAMS = {
+    'p1': {
+        # ...
+        'validators': [v1, v2, ..., vN]
+    }
+}
+params = parse_params(PARAMS)
+```
+This validation will return vN(...v2(v1(<input_param>)))
+
 ## Example
 ```python
 from flask_restful import Resource
