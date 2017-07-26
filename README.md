@@ -1,68 +1,92 @@
 # flask-request-args-parser
-This is a pyhton package, that implements flask.request args parsing.
+This is a Pyhton3 package, that implements flask.request args parsing.
+
 ## Installiation
 ```bash
 pip install flask-request-args-parser
 ```
+## Dependencies
+* [Flask](http://flask.pocoo.org)
 ## How to use
 Somewhere in your code:
 ```python
 def _param1_validator(v):
     if v <= 0:
-        return None, '\'param1\' must be greater than 0' # return None and error message if input value 'v' is not valid
-    return v # return any value that will be assigned to param, that is being validated
+        return None, '\'param1\' must be greater than 0'
+    return v
 
 PARAMS = {
-    'param_name_1': { # replace it with your str param_name
-        'type': int, # or any other class
-        'default': 10, # or any other value with satisfying 'type' field
-        'validators': [ # list your validators here
+    'param_name_1': {
+        'type': int,
+        'default': 10,
+        'validators': [
             _param1_validator,
-            lambda v: v**2,
+            lambda v: v**2
         ],
-        'locations': ['args'], # default locations are ['args', 'json']; possible locations are 'args', 'json', 'headers' and 'cookies'
-        'required': True, # default is False
+        'locations': ['args'],
+        'required': True,
     },
     'param_name_2': {
         # ...
-    }
+    },
+    'param_name_3': {} # just a param without any attributes
 }
+
 
 params = parse_params(PARAMS)
 param1 = params['param_name_1']
 ```
+## Attributes definition
 
-### `required`
-If param is required Flask will `abort` with `400`, `Missing required param: <param_name> in <locations>.`.
+### Order
+The order checking attributes is:
+1. [`locations`](#locations)
+1. [`required`](#required)
+1. [`type`](#type)
+1. [`default`](#default)
+1. [`validators`](#validators)
+
+### `locations: list[str]`
+This attribute tells where to look for a param.
+Possible locations: `'args' | 'json' | 'headers' | 'cookies'`.  
+You can combine locations: `'locations': ['args', 'headers']`.  
+Default: `['args','json']`.  
+
+### `required: bool`
+If `required` is `True` and param is missing in given `locations`, Flask will `abort` with `400`, `Missing required param: <param_name> in <locations>.`.
     
-### `type`
-If param can't be converted to its `type` field Flask will `abort` with `400`, `Invalid param type: <param_name> must be <param_type>, not <input_type>.`.
+### `type: class`
+If `type` is specified, parser will try to convert param into given type. Otherwise Flask will `abort` with `400`, `Invalid param type: <param_name> must be <param_type>, not <input_type>.`.
 
-### `default`
+### `default: object`
 If param isn't required and it is not listed in required locations the `default` value will be assigned to this param.
 
-### `validators`
+### `validators: list[function | lambda]`
 If param has `validators`, the input param value will go through all validators in given order and return value of last given validator will be assigned to this param. If at least one of validators returns None and error message, Flask will `abort` with `400`, `Invalid <param_name> param: <>.`. Here is the illustration:
 ```python
-def v1():
-    pass
+def v1(v): 
+    if v%2!=0:
+        return None, 'must be even'
+    return v
     
-def v2():
-    pass
-    
-# ...
-def vN():
-    pass
+def v2(v):
+    if v <= 0:
+        return None, 'must be positive'
+    return v
+
+def v3(v):
+    return v + 1
     
 PARAMS = {
     'p1': {
-        # ...
-        'validators': [v1, v2, ..., vN]
+        'type': int,
+        'validators': [v1, v2, v3]
     }
 }
+
 params = parse_params(PARAMS)
 ```
-This validation will return vN(...v2(v1(<input_param>)))
+This validation will return `v3(v2(v1(<input_param>)))`
 
 ## Example of usage
 ```python
