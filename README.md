@@ -19,6 +19,8 @@ pip install flask-request-args-parser
 ## How to use
 Somewhere in your code:
 ```python
+from flask_request_args_parser import parse_params
+
 def _param1_validator(v):
     if v <= 0:
         return None, '\'param1\' must be greater than 0'
